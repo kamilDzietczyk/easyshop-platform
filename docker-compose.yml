@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: easyshop-postgres
+    command: postgres -c password_encryption=md5 -c shared_preload_libraries=''
+    environment:
+      POSTGRES_USER: easyshop_user
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: easyshop_users_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data

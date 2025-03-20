@@ -1,0 +1,1 @@
+/usr/local/bin/postgres "-c" "password_encryption=md5" "-c" "shared_preload_libraries="
