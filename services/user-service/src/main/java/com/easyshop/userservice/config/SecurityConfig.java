@@ -3,6 +3,8 @@ package com.easyshop.userservice.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -10,14 +12,19 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
-        .csrf(csrf -> csrf.disable()) // Wyłączenie CSRF (na czas testów)
+        .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> auth
-            .requestMatchers("/users/**").permitAll() // Zezwolenie na dostęp do wszystkich endpointów w "/users/"
-            .anyRequest().permitAll() // Zezwolenie na WSZYSTKIE inne żądania (na razie)
+            .requestMatchers("/users/**").permitAll()
+            .anyRequest().permitAll()
         )
-        .formLogin(form -> form.disable()) // Wyłączenie logowania przez formularz
-        .httpBasic(basic -> basic.disable()); // Wyłączenie Basic Auth
+        .formLogin(form -> form.disable())
+        .httpBasic(basic -> basic.disable());
 
     return http.build();
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
   }
 }

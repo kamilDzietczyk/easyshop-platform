@@ -1,7 +1,10 @@
 package com.easyshop.userservice.model;
 
+import com.easyshop.userservice.enums.Role;
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(name = "users")
@@ -19,15 +22,27 @@ public class User {
   @Column(nullable = false, unique = true)
   private String email;
 
+  private String name;
+  private String surname;
+
   @Column(nullable = false)
   private String password;
 
+  @Enumerated(EnumType.STRING)
   @Column(nullable = false)
-  private String role;
+  private Role role;
 
-  public static void main(String[] args) {
-    User user = new User();
-    user.setEmail("test@example.com");
-    System.out.println(user.getEmail());
-  }
+  private String phoneNumber;
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Address> addresses;
+
+  @Column(nullable = false, updatable = false)
+  @CreationTimestamp
+  private String createdAt;
+
+  private String updatedAt;
+
+  @Column(nullable = false)
+  private boolean isActive = true;
 }
